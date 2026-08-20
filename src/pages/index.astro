@@ -7,11 +7,15 @@ import "../styles/tobii.min.css";
 ---
 
 <MainLayout title="Pollen of the Sakura - Pitch Deck">
-  <section class="md:block w-screen h-screen overflow-y-scroll snap-y snap-mandatory
+  <section
+    id="pitch-deck-container"
+    tabindex="0"
+    class="md:block w-screen h-screen overflow-y-scroll snap-y snap-mandatory
          scroll-smooth overscroll-contain
          scroll-behavior-smooth
          scroll-padding-top-12
-         px-20 bg-black">
+         px-20 bg-black outline-none"
+  >
     <div class="snap-start min-h-screen flex justify-center items-center py-20">
       <img src="../assets/images/1.jpg" alt="pollen 1" class="w-full h-full" />
     </div>
@@ -53,3 +57,25 @@ import "../styles/tobii.min.css";
     </div>
   </section>
 </MainLayout>
+
+<script>
+  const container = document.getElementById("pitch-deck-container");
+
+  if (container) {
+    // Gør sektionen klar til tastaturlytning med det samme
+    container.focus();
+
+    window.addEventListener("keydown", (e) => {
+      // Pil ned & PageDown scroller én skærm frem
+      if (e.key === "ArrowDown" || e.key === "PageDown") {
+        e.preventDefault();
+        container.scrollBy({ top: container.clientHeight, behavior: "smooth" });
+      }
+      // Pil op & PageUp scroller én skærm tilbage
+      else if (e.key === "ArrowUp" || e.key === "PageUp") {
+        e.preventDefault();
+        container.scrollBy({ top: -container.clientHeight, behavior: "smooth" });
+      }
+    });
+  }
+</script>
