@@ -1,12 +1,36 @@
 ---
 import MainLayout from "../layouts/MainLayout.astro";
-import Link from "../components/Link.astro";
 import Heading from "../components/Heading.astro";
 import Text from "../components/Text.astro";
 import "../styles/tobii.min.css";
 ---
 
 <MainLayout title="Pollen of the Sakura - Pitch Deck">
+  <!-- Mørk & moderne svæveknap til One Sheet -->
+  <div class="fixed top-6 right-6 z-50">
+    <a
+      href="/onesheet"
+      class="group no-underline inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-neutral-900/40 hover:bg-neutral-800 text-neutral-300 hover:text-white backdrop-blur-md border border-neutral-700/40 hover:border-neutral-500 text-xs uppercase tracking-widest font-semibold transition-all duration-300 shadow-2xl hover:shadow-neutral-700/20 active:scale-95"
+    >
+      <span>One Sheet</span>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="text-neutral-400 group-hover:text-white transition-transform duration-300 group-hover:translate-x-1"
+      >
+        <path d="M5 12h14"></path>
+        <path d="m12 5 7 7-7 7"></path>
+      </svg>
+    </a>
+  </div>
+
   <section id="pitch-deck-container" tabindex="0" class="w-screen h-[100dvh] overflow-y-scroll snap-y snap-mandatory
          scroll-smooth overscroll-contain
          px-4 md:px-20 bg-black outline-none block">
@@ -136,13 +160,13 @@ import "../styles/tobii.min.css";
             currentX = 0;
             currentY = 0;
             img.style.transform = "";
-            img.style.touchAction = "pan-y"; // Tillad normal sidescroll på mobil når ikke zoomet
+            img.style.touchAction = "pan-y";
             container.style.overflowY = "scroll";
             img.classList.remove("cursor-grab", "cursor-grabbing", "cursor-zoom-out");
             img.classList.add("cursor-zoom-in");
           } else {
             img.style.transform = `translate(${currentX}px, ${currentY}px) scale(${currentScale})`;
-            img.style.touchAction = "none"; // Lås sidescroll under zoom så man kan panne frit
+            img.style.touchAction = "none";
             container.style.overflowY = "hidden";
             img.classList.remove("cursor-zoom-in");
             img.classList.add(isDragging ? "cursor-grabbing" : "cursor-grab");

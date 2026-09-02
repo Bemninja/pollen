@@ -1,0 +1,183 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+---
+
+<MainLayout title="Pollen of the Sakura - One Sheet">
+  <!-- Mørk & moderne returknap -->
+  <div class="fixed top-6 left-6 z-50">
+    <a
+      href="/"
+      class="group no-underline inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-neutral-900/80 hover:bg-neutral-800 text-neutral-300 hover:text-white backdrop-blur-md border border-neutral-700/60 hover:border-neutral-500 text-xs uppercase tracking-widest font-semibold transition-all duration-300 shadow-2xl hover:shadow-neutral-700/20 active:scale-95"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="text-neutral-400 group-hover:text-white transition-transform duration-300 group-hover:-translate-x-1"
+      >
+        <path d="m12 19-7-7 7-7"></path>
+        <path d="M19 12H5"></path>
+      </svg>
+      <span>Pitch Deck</span>
+    </a>
+  </div>
+
+  <!-- Indhold med billede centreret -->
+  <main id="onesheet-container" class="w-screen h-[100dvh] bg-black flex justify-center items-center px-4 md:px-20 overflow-hidden">
+    <img src="../assets/images/pots-onesheet-15mb.png" alt="One Sheet" class="zoomable-img max-h-[85vh] max-h-[85dvh] max-w-[90vw] object-contain cursor-zoom-in select-none shadow-2xl rounded-sm" />
+  </main>
+</MainLayout>
+
+<style is:global>
+  header,
+  footer {
+    display: none !important;
+  }
+  html,
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+  }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const container = document.getElementById("onesheet-container");
+    const images = document.querySelectorAll(".zoomable-img");
+
+    images.forEach((img) => {
+      let currentScale = 1;
+      let currentX = 0;
+      let currentY = 0;
+
+      let isDragging = false;
+      let startX = 0,
+        startY = 0;
+
+      let initialPinchDist = 0;
+      let initialPinchScale = 1;
+
+      const updateTransform = (smooth = false) => {
+        img.style.transition = smooth ? "transform 0.25s ease-out" : "none";
+
+        if (currentScale <= 1.05) {
+          currentScale = 1;
+          currentX = 0;
+          currentY = 0;
+          img.style.transform = "";
+          img.style.touchAction = "auto";
+          img.classList.remove("cursor-grab", "cursor-grabbing", "cursor-zoom-out");
+          img.classList.add("cursor-zoom-in");
+        } else {
+          img.style.transform = `translate(${currentX}px, ${currentY}px) scale(${currentScale})`;
+          img.style.touchAction = "none";
+          img.classList.remove("cursor-zoom-in");
+          img.classList.add(isDragging ? "cursor-grabbing" : "cursor-grab");
+        }
+      };
+
+      // DOBBELTKLIK / DOBBELT-TAP
+      img.addEventListener("dblclick", (e) => {
+        e.preventDefault();
+
+        if (currentScale === 1) {
+          currentScale = 1.8;
+          currentX = window.innerWidth / 2 - e.clientX;
+          currentY = window.innerHeight / 2 - e.clientY;
+        } else if (currentScale < 2.5) {
+          currentScale = 2.8;
+        } else {
+          currentScale = 1;
+        }
+
+        updateTransform(true);
+      });
+
+      // MUS OG SINGLE TOUCH PANNING
+      img.addEventListener("pointerdown", (e) => {
+        if (currentScale <= 1) return;
+        isDragging = true;
+
+        if (img.setPointerCapture) {
+          try {
+            img.setPointerCapture(e.pointerId);
+          } catch (_) {}
+        }
+
+        startX = e.clientX - currentX;
+        startY = e.clientY - currentY;
+        updateTransform(false);
+      });
+
+      img.addEventListener("pointermove", (e) => {
+        if (!isDragging || currentScale <= 1) return;
+        e.preventDefault();
+
+        currentX = e.clientX - startX;
+        currentY = e.clientY - startY;
+
+        updateTransform(false);
+      });
+
+      const stopDrag = (e) => {
+        if (isDragging) {
+          isDragging = false;
+          if (img.releasePointerCapture && e.pointerId) {
+            try {
+              img.releasePointerCapture(e.pointerId);
+            } catch (_) {}
+          }
+          updateTransform(false);
+        }
+      };
+
+      img.addEventListener("pointerup", stopDrag);
+      img.addEventListener("pointercancel", stopDrag);
+
+      // TWO-FINGER PINCH-TO-ZOOM (TOUCH)
+      img.addEventListener(
+        "touchstart",
+        (e) => {
+          if (e.touches.length === 2) {
+            initialPinchDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+            initialPinchScale = currentScale;
+          }
+        },
+        { passive: true },
+      );
+
+      img.addEventListener(
+        "touchmove",
+        (e) => {
+          if (e.touches.length === 2 && initialPinchDist > 0) {
+            e.preventDefault();
+            const currentDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+            const scaleFactor = currentDist / initialPinchDist;
+            currentScale = Math.min(Math.max(initialPinchScale * scaleFactor, 1), 4);
+            updateTransform(false);
+          }
+        },
+        { passive: false },
+      );
+
+      img.addEventListener("touchend", (e) => {
+        if (e.touches.length < 2) {
+          initialPinchDist = 0;
+          if (currentScale < 1.1) {
+            currentScale = 1;
+            updateTransform(true);
+          }
+        }
+      });
+    });
+  });
+</script>
