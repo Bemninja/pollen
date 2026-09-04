@@ -3,11 +3,10 @@ import MainLayout from "../layouts/MainLayout.astro";
 ---
 
 <MainLayout title="Pollen of the Sakura - One Sheet">
-  <!-- Mørk & moderne returknap -->
   <div class="fixed top-6 left-6 z-50">
     <a
       href="/"
-      class="group no-underline inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-neutral-900/80 hover:bg-neutral-800 text-neutral-300 hover:text-white backdrop-blur-md border border-neutral-700/60 hover:border-neutral-500 text-xs uppercase tracking-widest font-semibold transition-all duration-300 shadow-2xl hover:shadow-neutral-700/20 active:scale-95"
+      class="group no-underline inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-neutral-900/50 hover:bg-neutral-900/70 text-neutral-300 hover:text-white backdrop-blur-md border border-neutral-700/40 hover:border-neutral-500/60 text-xs uppercase tracking-widest font-semibold transition-all duration-300 shadow-2xl hover:shadow-neutral-700/20 active:scale-95"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -28,11 +27,10 @@ import MainLayout from "../layouts/MainLayout.astro";
     </a>
   </div>
 
-  <!-- Knap i nederste højre hjørne til Contact -->
   <div class="fixed bottom-6 right-6 z-50">
     <a
       href="/#slide-13"
-      class="group no-underline inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-neutral-900/80 hover:bg-neutral-800 text-neutral-300 hover:text-white backdrop-blur-md border border-neutral-700/60 hover:border-neutral-500 text-xs uppercase tracking-widest font-semibold transition-all duration-300 shadow-2xl hover:shadow-neutral-700/20 active:scale-95"
+      class="group no-underline inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-neutral-900/50 hover:bg-neutral-900/70 text-neutral-300 hover:text-white backdrop-blur-md border border-neutral-700/40 hover:border-neutral-500/60 text-xs uppercase tracking-widest font-semibold transition-all duration-300 shadow-2xl hover:shadow-neutral-700/20 active:scale-95"
     >
       <span>Contact</span>
       <svg
@@ -54,7 +52,6 @@ import MainLayout from "../layouts/MainLayout.astro";
     </a>
   </div>
 
-  <!-- Indhold med billede centreret -->
   <main id="onesheet-container" class="w-screen h-[100dvh] bg-black flex justify-center items-center px-4 md:px-20 overflow-hidden">
     <img src="../assets/images/pots-onesheet-15mb.png" alt="One Sheet" draggable="false" class="zoomable-img max-h-[85vh] max-h-[85dvh] max-w-[90vw] object-contain cursor-zoom-in select-none shadow-2xl rounded-sm" />
   </main>
@@ -116,6 +113,7 @@ import MainLayout from "../layouts/MainLayout.astro";
         e.preventDefault();
 
         let targetScale = 1;
+
         if (currentScale === 1) {
           targetScale = 1.8;
         } else if (currentScale < 2.5) {
@@ -130,14 +128,17 @@ import MainLayout from "../layouts/MainLayout.astro";
           currentY = 0;
         } else {
           const rect = img.getBoundingClientRect();
-          const centerX = rect.left + rect.width / 2 - currentX;
-          const centerY = rect.top + rect.height / 2 - currentY;
+          const unscaledCenterX = rect.left + rect.width / 2 - currentX;
+          const unscaledCenterY = rect.top + rect.height / 2 - currentY;
 
-          const offsetX = (e.clientX - centerX) / currentScale;
-          const offsetY = (e.clientY - centerY) / currentScale;
+          const clickX = e.clientX - unscaledCenterX;
+          const clickY = e.clientY - unscaledCenterY;
 
-          currentX = e.clientX - centerX - offsetX * targetScale;
-          currentY = e.clientY - centerY - offsetY * targetScale;
+          const targetX = clickX - (clickX - currentX) * (targetScale / currentScale);
+          const targetY = clickY - (clickY - currentY) * (targetScale / currentScale);
+
+          currentX = targetX;
+          currentY = targetY;
           currentScale = targetScale;
         }
 
@@ -214,7 +215,7 @@ import MainLayout from "../layouts/MainLayout.astro";
       img.addEventListener("touchend", (e) => {
         if (e.touches.length < 2) {
           initialPinchDist = 0;
-          if (currentScale < 1.1) {
+          if (currentScale < 1.05) {
             currentScale = 1;
             updateTransform(true);
           }
