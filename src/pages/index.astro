@@ -6,11 +6,10 @@ import "../styles/tobii.min.css";
 ---
 
 <MainLayout title="Pollen of the Sakura - Pitch Deck">
-  <!-- Mørk & moderne svæveknap til One Sheet -->
   <div class="fixed top-6 right-6 z-50">
     <a
       href="/onesheet"
-      class="group no-underline inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-neutral-900/40 hover:bg-neutral-800 text-neutral-300 hover:text-white backdrop-blur-md border border-neutral-700/40 hover:border-neutral-500 text-xs uppercase tracking-widest font-semibold transition-all duration-300 shadow-2xl hover:shadow-neutral-700/20 active:scale-95"
+      class="group no-underline inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-neutral-900/80 hover:bg-neutral-800 text-neutral-300 hover:text-white backdrop-blur-md border border-neutral-700/60 hover:border-neutral-500 text-xs uppercase tracking-widest font-semibold transition-all duration-300 shadow-2xl hover:shadow-neutral-700/20 active:scale-95"
     >
       <span>One Sheet</span>
       <svg
@@ -31,71 +30,83 @@ import "../styles/tobii.min.css";
     </a>
   </div>
 
+  <div class="fixed bottom-6 right-6 z-50">
+    <a
+      href="#slide-13"
+      class="group no-underline inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-neutral-900/80 hover:bg-neutral-800 text-neutral-300 hover:text-white backdrop-blur-md border border-neutral-700/60 hover:border-neutral-500 text-xs uppercase tracking-widest font-semibold transition-all duration-300 shadow-2xl hover:shadow-neutral-700/20 active:scale-95"
+    >
+      <span>Contact</span>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="text-neutral-400 group-hover:text-white transition-transform duration-300 group-hover:translate-x-0.5"
+      >
+        <path
+          d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
+        ></path>
+      </svg>
+    </a>
+  </div>
+
   <section id="pitch-deck-container" tabindex="0" class="w-screen h-[100dvh] overflow-y-scroll snap-y snap-mandatory
          scroll-smooth overscroll-contain
          px-4 md:px-20 bg-black outline-none block">
-    <!-- Slide 1 -->
     <div class="snap-center snap-always h-[100dvh] w-full flex-shrink-0 flex justify-center items-center my-auto">
       <img src="../assets/images/1.jpg" alt="pollen 1" class="zoomable-img max-h-[85vh] max-h-[85dvh] max-w-[90vw] object-contain cursor-zoom-in select-none" />
     </div>
 
-    <!-- Slide 2 -->
     <div class="snap-center snap-always h-[100dvh] w-full flex-shrink-0 flex justify-center items-center my-auto">
       <img src="../assets/images/2.jpg" alt="pollen 2" class="zoomable-img max-h-[85vh] max-h-[85dvh] max-w-[90vw] object-contain cursor-zoom-in select-none" />
     </div>
 
-    <!-- Slide 3 -->
     <div class="snap-center snap-always h-[100dvh] w-full flex-shrink-0 flex justify-center items-center my-auto">
       <img src="../assets/images/3.jpg" alt="pollen 3" class="zoomable-img max-h-[85vh] max-h-[85dvh] max-w-[90vw] object-contain cursor-zoom-in select-none" />
     </div>
 
-    <!-- Slide 4 -->
     <div class="snap-center snap-always h-[100dvh] w-full flex-shrink-0 flex justify-center items-center my-auto">
       <img src="../assets/images/4.jpg" alt="pollen 4" class="zoomable-img max-h-[85vh] max-h-[85dvh] max-w-[90vw] object-contain cursor-zoom-in select-none" />
     </div>
 
-    <!-- Slide 5 -->
     <div class="snap-center snap-always h-[100dvh] w-full flex-shrink-0 flex justify-center items-center my-auto">
       <img src="../assets/images/5.jpg" alt="pollen 5" class="zoomable-img max-h-[85vh] max-h-[85dvh] max-w-[90vw] object-contain cursor-zoom-in select-none" />
     </div>
 
-    <!-- Slide 6 -->
     <div class="snap-center snap-always h-[100dvh] w-full flex-shrink-0 flex justify-center items-center my-auto">
       <img src="../assets/images/6.jpg" alt="pollen 6" class="zoomable-img max-h-[85vh] max-h-[85dvh] max-w-[90vw] object-contain cursor-zoom-in select-none" />
     </div>
 
-    <!-- Slide 7 -->
     <div class="snap-center snap-always h-[100dvh] w-full flex-shrink-0 flex justify-center items-center my-auto">
       <img src="../assets/images/7.jpg" alt="pollen 7" class="zoomable-img max-h-[85vh] max-h-[85dvh] max-w-[90vw] object-contain cursor-zoom-in select-none" />
     </div>
 
-    <!-- Slide 8 -->
     <div class="snap-center snap-always h-[100dvh] w-full flex-shrink-0 flex justify-center items-center my-auto">
       <img src="../assets/images/8.jpg" alt="pollen 8" class="zoomable-img max-h-[85vh] max-h-[85dvh] max-w-[90vw] object-contain cursor-zoom-in select-none" />
     </div>
 
-    <!-- Slide 9 -->
     <div class="snap-center snap-always h-[100dvh] w-full flex-shrink-0 flex justify-center items-center my-auto">
       <img src="../assets/images/9.jpg" alt="pollen 9" class="zoomable-img max-h-[85vh] max-h-[85dvh] max-w-[90vw] object-contain cursor-zoom-in select-none" />
     </div>
 
-    <!-- Slide 10 -->
     <div class="snap-center snap-always h-[100dvh] w-full flex-shrink-0 flex justify-center items-center my-auto">
       <img src="../assets/images/10.jpg" alt="pollen 10" class="zoomable-img max-h-[85vh] max-h-[85dvh] max-w-[90vw] object-contain cursor-zoom-in select-none" />
     </div>
 
-    <!-- Slide 11 -->
     <div class="snap-center snap-always h-[100dvh] w-full flex-shrink-0 flex justify-center items-center my-auto">
       <img src="../assets/images/11.jpg" alt="pollen 11" class="zoomable-img max-h-[85vh] max-h-[85dvh] max-w-[90vw] object-contain cursor-zoom-in select-none" />
     </div>
 
-    <!-- Slide 12 -->
     <div class="snap-center snap-always h-[100dvh] w-full flex-shrink-0 flex justify-center items-center my-auto">
       <img src="../assets/images/12.jpg" alt="pollen 12" class="zoomable-img max-h-[85vh] max-h-[85dvh] max-w-[90vw] object-contain cursor-zoom-in select-none" />
     </div>
 
-    <!-- Slide 13 -->
-    <div class="snap-center snap-always h-[100dvh] w-full flex-shrink-0 flex justify-center items-center my-auto">
+    <div id="slide-13" class="snap-center snap-always h-[100dvh] w-full flex-shrink-0 flex justify-center items-center my-auto">
       <img src="../assets/images/13.jpg" alt="pollen 13" class="zoomable-img max-h-[85vh] max-h-[85dvh] max-w-[90vw] object-contain cursor-zoom-in select-none" />
     </div>
   </section>
