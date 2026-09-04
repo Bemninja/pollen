@@ -3,6 +3,7 @@ import MainLayout from "../layouts/MainLayout.astro";
 ---
 
 <MainLayout title="Pollen of the Sakura - One Sheet">
+  <!-- Mørk & moderne returknap -->
   <div class="fixed top-6 left-6 z-50">
     <a
       href="/"
@@ -27,6 +28,7 @@ import MainLayout from "../layouts/MainLayout.astro";
     </a>
   </div>
 
+  <!-- Knap i nederste højre hjørne til Contact -->
   <div class="fixed bottom-6 right-6 z-50">
     <a
       href="/#slide-13"
@@ -52,8 +54,9 @@ import MainLayout from "../layouts/MainLayout.astro";
     </a>
   </div>
 
+  <!-- Indhold med billede centreret -->
   <main id="onesheet-container" class="w-screen h-[100dvh] bg-black flex justify-center items-center px-4 md:px-20 overflow-hidden">
-    <img src="../assets/images/pots-onesheet-15mb.png" alt="One Sheet" class="zoomable-img max-h-[85vh] max-h-[85dvh] max-w-[90vw] object-contain cursor-zoom-in select-none shadow-2xl rounded-sm" />
+    <img src="../assets/images/pots-onesheet-15mb.png" alt="One Sheet" draggable="false" class="zoomable-img max-h-[85vh] max-h-[85dvh] max-w-[90vw] object-contain cursor-zoom-in select-none shadow-2xl rounded-sm" />
   </main>
 </MainLayout>
 
@@ -74,10 +77,11 @@ import MainLayout from "../layouts/MainLayout.astro";
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
-    const container = document.getElementById("onesheet-container");
     const images = document.querySelectorAll(".zoomable-img");
 
     images.forEach((img) => {
+      img.ondragstart = () => false;
+
       let currentScale = 1;
       let currentX = 0;
       let currentY = 0;
@@ -108,27 +112,45 @@ import MainLayout from "../layouts/MainLayout.astro";
         }
       };
 
-      // DOBBELTKLIK / DOBBELT-TAP
       img.addEventListener("dblclick", (e) => {
         e.preventDefault();
 
+        let targetScale = 1;
         if (currentScale === 1) {
-          currentScale = 1.8;
-          currentX = window.innerWidth / 2 - e.clientX;
-          currentY = window.innerHeight / 2 - e.clientY;
+          targetScale = 1.8;
         } else if (currentScale < 2.5) {
-          currentScale = 2.8;
+          targetScale = 2.8;
         } else {
+          targetScale = 1;
+        }
+
+        if (targetScale === 1) {
           currentScale = 1;
+          currentX = 0;
+          currentY = 0;
+        } else {
+          const rect = img.getBoundingClientRect();
+          const centerX = rect.left + rect.width / 2 - currentX;
+          const centerY = rect.top + rect.height / 2 - currentY;
+
+          const offsetX = (e.clientX - centerX) / currentScale;
+          const offsetY = (e.clientY - centerY) / currentScale;
+
+          currentX = e.clientX - centerX - offsetX * targetScale;
+          currentY = e.clientY - centerY - offsetY * targetScale;
+          currentScale = targetScale;
         }
 
         updateTransform(true);
       });
 
-      // MUS OG SINGLE TOUCH PANNING
       img.addEventListener("pointerdown", (e) => {
         if (currentScale <= 1) return;
+        e.preventDefault();
+
         isDragging = true;
+        startX = e.clientX - currentX;
+        startY = e.clientY - currentY;
 
         if (img.setPointerCapture) {
           try {
@@ -136,8 +158,6 @@ import MainLayout from "../layouts/MainLayout.astro";
           } catch (_) {}
         }
 
-        startX = e.clientX - currentX;
-        startY = e.clientY - currentY;
         updateTransform(false);
       });
 
@@ -154,7 +174,7 @@ import MainLayout from "../layouts/MainLayout.astro";
       const stopDrag = (e) => {
         if (isDragging) {
           isDragging = false;
-          if (img.releasePointerCapture && e.pointerId) {
+          if (img.hasPointerCapture && img.hasPointerCapture(e.pointerId)) {
             try {
               img.releasePointerCapture(e.pointerId);
             } catch (_) {}
@@ -166,7 +186,6 @@ import MainLayout from "../layouts/MainLayout.astro";
       img.addEventListener("pointerup", stopDrag);
       img.addEventListener("pointercancel", stopDrag);
 
-      // TWO-FINGER PINCH-TO-ZOOM (TOUCH)
       img.addEventListener(
         "touchstart",
         (e) => {
