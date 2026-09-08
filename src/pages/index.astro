@@ -6,6 +6,19 @@ import "../styles/tobii.min.css";
 ---
 
 <MainLayout title="Pollen of the Sakura - Pitch Deck">
+  <!-- Rotate Device Prompt (Kun i portrait mode på mobil, forsvinder automatisk efter 10 sekunder) -->
+  <div
+    id="rotate-prompt"
+    class="fixed bottom-6 left-6 z-50 portrait:flex md:hidden items-center gap-2.5 px-4 py-2.5 rounded-full bg-neutral-900/50 backdrop-blur-md border border-neutral-700/40 text-neutral-300 text-[11px] uppercase tracking-widest font-semibold shadow-2xl pointer-events-none select-none transition-opacity duration-[1500ms]"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-neutral-400 animate-rotate-phone">
+      <rect width="12" height="18" x="6" y="3" rx="2"></rect>
+      <path d="M12 18h.01"></path>
+    </svg>
+    <span>Rotate for better view</span>
+  </div>
+
+  <!-- Knap i øverste højre hjørne til One Sheet -->
   <div class="fixed top-6 right-6 z-50">
     <a
       href="/onesheet"
@@ -30,6 +43,7 @@ import "../styles/tobii.min.css";
     </a>
   </div>
 
+  <!-- Dynamic Contact/Top button -->
   <div class="fixed bottom-6 right-6 z-50">
     <a
       id="contact-top-btn"
@@ -127,10 +141,48 @@ import "../styles/tobii.min.css";
     height: 100vh !important;
     height: 100dvh !important;
   }
+
+  /* Rotation animation for telefonen */
+  @keyframes rotateDevice {
+    0%,
+    10% {
+      transform: rotate(0deg);
+    }
+    40%,
+    60% {
+      transform: rotate(-90deg);
+    }
+    90%,
+    100% {
+      transform: rotate(0deg);
+    }
+  }
+
+  .animate-rotate-phone {
+    animation: rotateDevice 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  }
+
+  /* Sikrer at prompten altid skjules i landscape mode uanset enhed */
+  @media (orientation: landscape) {
+    #rotate-prompt {
+      display: none !important;
+    }
+  }
 </style>
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
+    // Timer til at skjule "Rotate prompt" efter 15 sekunder
+    const rotatePrompt = document.getElementById("rotate-prompt");
+    if (rotatePrompt) {
+      setTimeout(() => {
+        rotatePrompt.classList.add("opacity-0");
+        setTimeout(() => {
+          rotatePrompt.style.display = "none";
+        }, 1500); // Venter på fade-out animationen
+      }, 15000); // 15 sekunder
+    }
+
     const container = document.getElementById("pitch-deck-container");
     const slide13 = document.getElementById("slide-13");
     const btn = document.getElementById("contact-top-btn");
