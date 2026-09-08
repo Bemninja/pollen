@@ -6,10 +6,10 @@ import "../styles/tobii.min.css";
 ---
 
 <MainLayout title="Pollen of the Sakura - Pitch Deck">
-  <!-- Rotate Device Prompt (Kun i portrait mode på mobil, forsvinder automatisk efter 10 sekunder) -->
+  <!-- Rotate Device Prompt -->
   <div
     id="rotate-prompt"
-    class="fixed bottom-6 left-6 z-50 portrait:flex md:hidden items-center gap-2.5 px-4 py-2.5 rounded-full bg-neutral-900/50 backdrop-blur-md border border-neutral-700/40 text-neutral-300 text-[11px] uppercase tracking-widest font-semibold shadow-2xl pointer-events-none select-none transition-opacity duration-[1500ms]"
+    class="fixed bottom-6 left-6 z-50 items-center gap-2.5 px-4 py-2.5 rounded-full bg-neutral-900/50 backdrop-blur-md border border-neutral-700/40 text-neutral-300 text-[11px] uppercase tracking-widest font-semibold shadow-2xl pointer-events-none select-none transition-all duration-[1500ms]"
   >
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-neutral-400 animate-rotate-phone">
       <rect width="12" height="18" x="6" y="3" rx="2"></rect>
@@ -162,25 +162,33 @@ import "../styles/tobii.min.css";
     animation: rotateDevice 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
   }
 
-  /* Sikrer at prompten altid skjules i landscape mode uanset enhed */
-  @media (orientation: landscape) {
+  /* Prompt Visibility Management */
+  #rotate-prompt {
+    display: none;
+    opacity: 1;
+    visibility: visible;
+  }
+
+  @media (max-width: 767px) and (orientation: portrait) {
     #rotate-prompt {
-      display: none !important;
+      display: flex;
     }
+  }
+
+  #rotate-prompt.fade-out {
+    opacity: 0;
+    visibility: hidden;
   }
 </style>
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
-    // Timer til at skjule "Rotate prompt" efter 15 sekunder
+    // Smoothly fade out and hide the prompt after 15 seconds
     const rotatePrompt = document.getElementById("rotate-prompt");
     if (rotatePrompt) {
       setTimeout(() => {
-        rotatePrompt.classList.add("opacity-0");
-        setTimeout(() => {
-          rotatePrompt.style.display = "none";
-        }, 1500); // Venter på fade-out animationen
-      }, 15000); // 15 sekunder
+        rotatePrompt.classList.add("fade-out");
+      }, 15000);
     }
 
     const container = document.getElementById("pitch-deck-container");
